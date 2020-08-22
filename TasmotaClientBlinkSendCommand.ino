@@ -40,6 +40,7 @@ bool ledstate = false;
 
 void user_FUNC_EVERY_SECOND(void)
 {
+  char buffer[40]; //allow space for the string, int and terminating '/0'p  int rpm = 123;
   rpm = getRPM();
   if (ledstate) {
     ledstate = false;
@@ -49,16 +50,12 @@ void user_FUNC_EVERY_SECOND(void)
     digitalWrite(LED_BUILTIN, HIGH);
   }
 
-//String rpmstr=String(rpm);
-//String sendstr = "publish tele/ventilatie/rpm " + rpmstr;
-//
-//char* cstr = new char[sendstr.length() + 1];
-//strcpy(cstr, sendstr.c_str());
-//// do stuff
-//delete [] cstr;
-//slave.ExecuteCommand(cstr);
+  char rpmChar[8];
+  strcpy (buffer, "publish tele/ventilatie/rpm ");
+  itoa(rpm, rpmChar, 10);
+  strcat(buffer, rpmChar);
 
-  slave.ExecuteCommand((char*)"publish tele/ventilatie/rpm 100");
+  slave.ExecuteCommand((char*)buffer);
 }
 
 /*******************************************************************\
